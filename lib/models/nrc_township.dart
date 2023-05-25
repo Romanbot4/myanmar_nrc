@@ -23,7 +23,7 @@ class NRCTownship {
       code: map["code"],
       stateId: map["stateId"],
       stateCode: map["stateCode"],
-      shortName: NRCLocalizedText.fromMap(map["shortName"]),
+      shortName: NRCLocalizedText.fromMap(map["short"]),
       name: NRCLocalizedText.fromMap(map["name"]),
     );
   }

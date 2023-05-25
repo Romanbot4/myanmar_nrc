@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:myanmar_nrc/models/nrc_state.dart';
 import 'package:myanmar_nrc/models/nrc_township.dart';
 import 'package:myanmar_nrc/models/nrc_type.dart';
+
+import 'patterns.dart';
 export 'package:myanmar_nrc/models/nrc_state.dart';
 export 'package:myanmar_nrc/models/nrc_township.dart';
 export 'package:myanmar_nrc/models/nrc_type.dart';
@@ -25,7 +27,8 @@ class MyanmarNRC {
 
   static late final Map<String, dynamic> _rawData;
   static Future<void> _loadRawData() async {
-    final source = await rootBundle.loadString('assets/NRC_Data.min.json');
+    final source = await rootBundle
+        .loadString('packages/myanmar_nrc/assets/NRC_Data.min.json');
     _rawData = json.decode(source);
     _parseNRCTypes();
     _parseNRCStates();
@@ -45,7 +48,7 @@ class MyanmarNRC {
   static const String _nrcStatesKey = "nrcStates";
   static const String _nrcTownshipsKey = "nrcTownships";
 
-  static late Map<String, NRCType> _nrcTypesHasMap;
+  static Map<String, NRCType> _nrcTypesHasMap = {};
   Iterable<NRCType> get nrcTypes => _nrcTypesHasMap.values;
 
   static void _parseNRCTypes() {
@@ -56,7 +59,14 @@ class MyanmarNRC {
     );
   }
 
-  static late Map<String, NRCState> _nrcStatesHashMap;
+  static bool validate(String? text) {
+    if (text == null) return false;
+    const mmPattern = MyanmarNRCPattern.myNRCPattern;
+    const enPattern = MyanmarNRCPattern.enNRCPattern;
+    return RegExp(mmPattern).hasMatch(text) || RegExp(enPattern).hasMatch(text);
+  }
+
+  static Map<String, NRCState> _nrcStatesHashMap = {};
   Iterable<NRCState> get nrcStates => _nrcStatesHashMap.values;
 
   static void _parseNRCStates() {
@@ -67,8 +77,8 @@ class MyanmarNRC {
     );
   }
 
-  static late Map<String, NRCTownship> _nrcTownshipsHashMap;
-  static late Map<String, List<NRCTownship>> _nrcTownshipsByStateIdHasMap;
+  static Map<String, NRCTownship> _nrcTownshipsHashMap = {};
+  static final Map<String, List<NRCTownship>> _nrcTownshipsByStateIdHasMap = {};
   Iterable<NRCTownship> get nrcTownships => _nrcTownshipsHashMap.values;
 
   static void _parseNRCTownships() {
