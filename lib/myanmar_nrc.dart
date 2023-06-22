@@ -25,11 +25,14 @@ class MyanmarNRC {
     return _instance;
   }
 
-  static late final Map<String, dynamic> _rawData;
+  static Map<String, dynamic>? _rawData;
   static Future<void> _loadRawData() async {
-    final source = await rootBundle
-        .loadString('packages/myanmar_nrc/assets/NRC_Data.min.json');
-    _rawData = json.decode(source);
+    if (_rawData == null) {
+      final source = await rootBundle.loadString(
+        'packages/myanmar_nrc/assets/NRC_Data.min.json',
+      );
+      _rawData = json.decode(source);
+    }
     _parseNRCTypes();
     _parseNRCStates();
     _parseNRCTownships();
@@ -103,7 +106,7 @@ class MyanmarNRC {
     required Map<String, T> hashMap,
     Interceptor<T>? interceptor,
   }) {
-    final jsons = _rawData[key] as List;
+    final jsons = _rawData?[key] as List;
 
     for (int i = 0; i < jsons.length; i++) {
       final map = jsons[i] as Map<String, dynamic>;

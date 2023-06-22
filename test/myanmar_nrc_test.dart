@@ -25,6 +25,7 @@ void main() async {
 
   test("Get TSs by State ID", () async {
     final value = myanmarNRC.nrctTownshipsByStateId(stateId!);
+    // ignore: avoid_print
     print(value);
   });
 }
