@@ -11,7 +11,7 @@ class NRCForm {
     required this.nrcNumber,
   });
 
-  NRCForm? parse(String text) {
+  static NRCForm? parse(String text) {
     text = text.replaceAll(RegExp(r"\s+"), "");
     final pattern = RegExp(r"(\/|\(|\))");
     final splitted = text.split(pattern);
